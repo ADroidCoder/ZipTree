@@ -1,0 +1,16 @@
+[workspace]
+resolver = "2"
+members = ["crates/ziptree-core", "src-tauri"]
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# 开发模式下也优化依赖，否则解压大文件会很慢
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

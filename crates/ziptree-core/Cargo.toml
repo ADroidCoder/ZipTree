@@ -1,0 +1,33 @@
+[package]
+name = "ziptree-core"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+
+[features]
+default = ["rar"]
+# RAR 解压用的是 unRAR 源码，它有自己的许可证（允许免费分发解压功能，不允许用来做 RAR 压缩）
+rar = ["dep:unrar"]
+
+[dependencies]
+serde.workspace = true
+zip = { version = "9", features = ["chrono"] }
+sevenz-rust2 = { version = "0.24", features = ["zstd", "deflate"] }
+unrar = { version = "0.5", optional = true }
+tar = "0.4"
+flate2 = "1"
+bzip2 = "0.6"
+# static：自带 liblzma 源码编译，不链接系统 / Homebrew 的动态库（否则别的电脑上打不开）
+liblzma = { version = "0.4", features = ["parallel", "static"] }
+zstd = { version = "0.14", features = ["zstdmt"] }
+chardetng = "1"
+encoding_rs = "0.8"
+walkdir = "2"
+filetime = "0.2"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+unicode-normalization = "0.1"
+
+[dev-dependencies]
+tempfile = "3"
+flate2 = "1"
+encoding_rs = "0.8"

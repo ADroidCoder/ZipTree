@@ -1,0 +1,145 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "ZipTree",
+  "version": "0.1.0",
+  "identifier": "com.ziptree.desktop",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1421",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist",
+    "beforeBundleCommand": "bash macos/FinderExtension/build.sh"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "ZipTree",
+        "width": 960,
+        "height": 640,
+        "minWidth": 640,
+        "minHeight": 420,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "dragDropEnabled": true,
+        "backgroundColor": "#1e1f22"
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "Utility",
+    "copyright": "Apache-2.0",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "fileAssociations": [
+      {
+        "ext": [
+          "zip"
+        ],
+        "name": "ZIP Archive",
+        "role": "Viewer",
+        "contentTypes": [
+          "public.zip-archive"
+        ]
+      },
+      {
+        "ext": [
+          "7z"
+        ],
+        "name": "7-Zip Archive",
+        "role": "Viewer",
+        "contentTypes": [
+          "org.7-zip.7-zip-archive"
+        ]
+      },
+      {
+        "ext": [
+          "rar"
+        ],
+        "name": "RAR Archive",
+        "role": "Viewer",
+        "contentTypes": [
+          "com.rarlab.rar-archive"
+        ]
+      },
+      {
+        "ext": [
+          "tar"
+        ],
+        "name": "Tar Archive",
+        "role": "Viewer",
+        "contentTypes": [
+          "public.tar-archive"
+        ]
+      },
+      {
+        "ext": [
+          "gz",
+          "tgz"
+        ],
+        "name": "Gzip Archive",
+        "role": "Viewer",
+        "contentTypes": [
+          "org.gnu.gnu-zip-archive",
+          "org.gnu.gnu-zip-tar-archive"
+        ]
+      },
+      {
+        "ext": [
+          "bz2",
+          "tbz",
+          "tbz2"
+        ],
+        "name": "Bzip2 Archive",
+        "role": "Viewer",
+        "contentTypes": [
+          "public.bzip2-archive"
+        ]
+      },
+      {
+        "ext": [
+          "xz",
+          "txz"
+        ],
+        "name": "XZ Archive",
+        "role": "Viewer",
+        "contentTypes": [
+          "org.tukaani.xz-archive"
+        ]
+      },
+      {
+        "ext": [
+          "zst",
+          "tzst"
+        ],
+        "name": "Zstandard Archive",
+        "role": "Viewer"
+      },
+      {
+        "ext": [
+          "001"
+        ],
+        "name": "Split Archive",
+        "role": "Viewer",
+        "rank": "Alternate"
+      }
+    ],
+    "macOS": {
+      "minimumSystemVersion": "11.0",
+      "signingIdentity": "-",
+      "files": {
+        "PlugIns/ZipTreeFinder.appex": "../target/finder/ZipTreeFinder.appex"
+      }
+    }
+  }
+}

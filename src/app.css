@@ -1,0 +1,176 @@
+:root {
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI",
+    "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --mono: "SF Mono", Menlo, Consolas, monospace;
+
+  /* 浅色 */
+  --bg: #f5f6f8;
+  --bg-panel: #ffffff;
+  --bg-bar: #eceef1;
+  --bg-hover: rgba(0, 0, 0, 0.045);
+  --bg-selected: rgba(47, 111, 235, 0.16);
+  --bg-selected-focus: #2f6feb;
+  --bg-input: #ffffff;
+  --bg-drop: rgba(47, 111, 235, 0.08);
+  --border: #dcdfe5;
+  --border-strong: #c6cbd3;
+  --text: #1d2129;
+  --text-dim: #5b6372;
+  --text-faint: #8d95a3;
+  --accent: #2f6feb;
+  --accent-text: #ffffff;
+  --danger: #d1242f;
+  --ok: #1a7f37;
+  --warn: #9a6700;
+  --folder: #4b8df8;
+  --shadow: 0 12px 40px rgba(16, 24, 40, 0.2);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1e1f22;
+    --bg-panel: #26282c;
+    --bg-bar: #2b2d31;
+    --bg-hover: rgba(255, 255, 255, 0.05);
+    --bg-selected: rgba(77, 136, 255, 0.22);
+    --bg-selected-focus: #3a74e0;
+    --bg-input: #1b1c1f;
+    --bg-drop: rgba(77, 136, 255, 0.12);
+    --border: #383a40;
+    --border-strong: #4a4d55;
+    --text: #e3e5e8;
+    --text-dim: #a6abb5;
+    --text-faint: #737985;
+    --accent: #4d88ff;
+    --accent-text: #ffffff;
+    --danger: #f2555a;
+    --ok: #3fb950;
+    --warn: #d29922;
+    --folder: #6aa2ff;
+    --shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.45 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  /* 像原生应用一样，不能随手选中界面文字 */
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+  overflow: hidden;
+}
+
+input,
+select,
+button,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  border: 1px solid var(--border-strong);
+  background: var(--bg-panel);
+  border-radius: 6px;
+  padding: 4px 12px;
+  height: 28px;
+  cursor: default;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+button:hover:not(:disabled) {
+  background: var(--bg-hover);
+}
+
+button:disabled {
+  opacity: 0.45;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+button.primary:hover:not(:disabled) {
+  background: var(--accent);
+  filter: brightness(1.08);
+}
+
+button.plain {
+  border-color: transparent;
+  background: transparent;
+  padding: 4px 8px;
+}
+
+button.plain:hover:not(:disabled) {
+  background: var(--bg-hover);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="search"],
+select {
+  height: 28px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-input);
+  border-radius: 6px;
+  padding: 0 8px;
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text) 22%, transparent);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--text) 38%, transparent);
+}
+
+.dim {
+  color: var(--text-dim);
+}
+
+.faint {
+  color: var(--text-faint);
+}
