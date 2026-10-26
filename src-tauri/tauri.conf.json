@@ -132,6 +132,28 @@
         "name": "Split Archive",
         "role": "Viewer",
         "rank": "Alternate"
+      },
+      {
+        "ext": [
+          "apk",
+          "apks",
+          "xapk",
+          "aab",
+          "aar",
+          "ipa",
+          "jar",
+          "war",
+          "ear",
+          "epub",
+          "xpi",
+          "vsix",
+          "whl",
+          "nupkg",
+          "cbz"
+        ],
+        "name": "ZIP-based Package",
+        "role": "Viewer",
+        "rank": "Alternate"
       }
     ],
     "macOS": {

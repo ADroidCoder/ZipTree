@@ -25,8 +25,6 @@ export default {
   压缩包保存到: "Save Archive As",
   压缩包是空的: "This archive is empty",
   压缩级别: "Level",
-  "双击压缩包、拖到程序坞图标或窗口里时生效":
-    "When you double-click an archive, or drop it on the Dock icon or this window",
   取消: "Cancel",
   "可选，留空不加密": "Optional",
   "同时加密文件名（不输入密码看不到里面有什么）":
@@ -48,8 +46,6 @@ export default {
   打开其他压缩包: "Open another archive",
   打开压缩包: "Open Archive",
   打开压缩包时: "Opening archives",
-  "把压缩包拖到这里，解压到它所在的文件夹":
-    "Drop archives here to extract them next to the original",
   "把文件或文件夹拖到这里，打包成 ZIP、7Z 等格式":
     "Drop files or folders here to make a ZIP, 7Z and more",
   搜索: "Search",
@@ -61,8 +57,6 @@ export default {
   "更改…": "Change…",
   最小: "Smallest",
   最快: "Fastest",
-  "松开鼠标：压缩包按设置解压或预览，其他文件打开压缩":
-    "Drop archives to extract or preview them, or other files to compress them",
   标准: "Normal",
   格式: "Format",
   "正在解压…": "Extracting…",
@@ -87,14 +81,12 @@ export default {
   "跳过了 {0} 个已存在的文件":
     "Skipped {0} existing file||Skipped {0} existing files",
   返回: "Back",
-  "选择压缩包…": "Choose Archives…",
   "选择文件…": "Choose Files…",
   "选择文件夹…": "Choose Folders…",
   选择要压缩的项目: "Choose Items to Compress",
   选择要解压的压缩包: "Choose Archives to Extract",
   隐藏密码: "Hide password",
   需要密码: "Password Required",
-  "预览内容…": "Preview…",
   访达右键菜单: "Finder menu",
   已启用: "Enabled",
   "未启用。在系统设置里打开 ZipTree 的访达扩展后，右键压缩包就能直接解压。":
@@ -147,4 +139,10 @@ export default {
   已经是最新版本: "You're up to date",
   "检查更新失败：{0}": "Couldn't check for updates: {0}",
   "暂时无法获取新版本信息，请检查网络后再试": "Couldn't get update info. Check your connection and try again.",
+  "把压缩包拖到这里，预览里面的内容或直接解压": "Drop archives here to look inside or extract them",
+  "打开压缩包…": "Open Archive…",
+  "直接解压…": "Extract…",
+  预览内容: "Look Inside",
+  直接解压: "Extract",
+  "双击压缩包、拖到程序坞图标上时生效": "When you double-click an archive or drop it on the Dock icon",
 } as Record<string, string>;

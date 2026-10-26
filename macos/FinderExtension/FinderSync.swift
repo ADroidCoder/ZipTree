@@ -4,7 +4,11 @@
 import Cocoa
 import FinderSync
 
-private let archiveExts: Set<String> = ["zip", "7z", "rar", "tar", "gz", "tgz", "bz2", "tbz", "tbz2", "xz", "txz", "zst", "tzst", "001"]
+private let archiveExts: Set<String> = [
+    "zip", "7z", "rar", "tar", "gz", "tgz", "bz2", "tbz", "tbz2", "xz", "txz", "zst", "tzst", "001",
+    // 本质上是 zip 的安装包、电子书等
+    "apk", "apks", "xapk", "aab", "aar", "ipa", "jar", "war", "ear", "epub", "xpi", "vsix", "whl", "nupkg", "cbz",
+]
 
 private let chinese = Locale.preferredLanguages.first?.hasPrefix("zh") ?? false
 

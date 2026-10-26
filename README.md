@@ -42,6 +42,7 @@ Once installed, ZipTree checks for new versions automatically. You can also chec
 ## Features
 
 - **Many formats** — extract ZIP, 7Z, RAR (including RAR5), TAR, GZ, BZ2, XZ and ZST; create ZIP, 7Z, TAR.GZ, TAR.XZ and TAR.ZST.
+- **Packages too** — APK, IPA, JAR, AAR, EPUB and other files that are really ZIP archives can be previewed and extracted directly.
 - **No garbled file names** — zip files made on Chinese, Japanese or Korean Windows usually store names in a legacy encoding such as GBK, which the built-in Archive Utility turns into gibberish. ZipTree detects the encoding automatically, and you can switch it by hand if needed.
 - **Look before you extract** — browse an archive as a folder tree, sort and search it, and extract just the parts you need. Double-click a file to open it, or press Space for Quick Look.
 - **Split archives** — open 7-Zip style split archives (`.001`, `.002`… — open any part) and multi-volume RAR. When compressing, split into 100 MB, 4 GB or other sizes.
@@ -55,8 +56,8 @@ Once installed, ZipTree checks for new versions automatically. You can also chec
 
 ## Usage
 
-- **Double-click an archive**, or drop it on the Dock icon, to extract it next to the original. You can switch this to preview first in Settings.
-- **Drop files on the window** — drop on the *Extract* area to extract, or on the *Compress* area to create an archive.
+- **Double-click an archive**, or drop it on the Dock icon, to look inside. Then extract everything, extract to a folder of your choice, or extract just some items. You can switch this to extract right away in Settings.
+- **Drop files on the window** — drop an archive on *Look Inside* or *Extract*, or drop files on the *Compress* area to create an archive.
 - **⌘O** opens an archive for preview. Select some items and click *Extract Selected*.
 - **Finder menu** — before first use, open *Settings → Finder menu* and click *Open System Settings…* to turn on the ZipTree Finder extension.
 - **Settings** let you choose where to extract (next to the archive, ask every time, or a fixed folder), move archives to the Trash after extracting, and make ZipTree the default app for archives.

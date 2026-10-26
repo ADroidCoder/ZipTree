@@ -37,7 +37,9 @@
     const infos = await api.pathInfo(paths);
     if (!infos.length) return;
     if (intent === "compress_zip") return quickZip(infos.map((i) => i.path));
-    const archives = infos.filter((i) => i.is_archive).map((i) => i.path);
+    // 明确要解压、预览、检查时，扩展名不认识的文件也试着当压缩包打开（例如改了扩展名的 zip）
+    const explicit = intent === "extract" || intent === "extract_to" || intent === "preview" || intent === "test";
+    const archives = infos.filter((i) => i.is_archive || (explicit && !i.is_dir)).map((i) => i.path);
     if (intent === "compress" || !archives.length || (intent === "auto" && archives.length !== infos.length)) {
       compressSources = infos;
       return;
@@ -107,7 +109,8 @@
 
   /** 拖动时鼠标下面是哪个区域（data-drop 属性） */
   function zoneAt(pos: { x: number; y: number }): string | null {
-    const r = window.devicePixelRatio || 1;
+    // 拖放事件的坐标标着“物理像素”，但 macOS 上实际是逻辑坐标（wry 直接用了 NSView 的坐标），不能再除以缩放倍数
+    const r = isMac ? 1 : window.devicePixelRatio || 1;
     const el = document.elementFromPoint(pos.x / r, pos.y / r);
     return el?.closest<HTMLElement>("[data-drop]")?.dataset.drop ?? null;
   }
@@ -143,7 +146,7 @@
           const z = zoneAt(p.position);
           dragging = false;
           zone = null;
-          handlePaths(p.paths, z === "extract" ? "extract" : z === "compress" ? "compress" : "auto");
+          handlePaths(p.paths, z === "extract" || z === "preview" || z === "compress" ? z : "auto");
         }
       }),
     ];
@@ -185,11 +188,12 @@
         />
       {/key}
       {#if dragging}
-        <div class="drop-overlay" data-drop="auto">
-          <div class="drop-hint">
-            <Icon name="archive" size={28} />
-            <span>{t("松开鼠标：压缩包按设置解压或预览，其他文件打开压缩")}</span>
-          </div>
+        <div class="drop-overlay">
+          {#each [["preview", "eye", t("预览内容")], ["extract", "extract", t("直接解压")], ["compress", "compress", t("压缩")]] as [id, icon, label] (id)}
+            <div class="drop-zone" class:active={zone === id} data-drop={id}>
+              <Icon name={icon} size={26} />{label}
+            </div>
+          {/each}
         </div>
       {/if}
     {:else}
@@ -285,25 +289,37 @@
 
   .drop-overlay {
     position: absolute;
-    inset: 8px;
-    border: 2px dashed var(--accent);
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    inset: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
     z-index: 10;
   }
 
-  .drop-hint {
+  .drop-zone {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 10px;
-    color: var(--accent);
+    border: 2px dashed var(--border-strong);
+    border-radius: 12px;
+    color: var(--text-dim);
+    font-size: 15px;
     font-weight: 500;
-    text-align: center;
-    padding: 0 24px;
+    transition:
+      border-color 0.12s,
+      background 0.12s,
+      color 0.12s;
+  }
+
+  .drop-zone.active {
+    border-color: var(--accent);
+    border-style: solid;
+    background: var(--bg-drop);
+    color: var(--accent);
   }
 
   .loading {

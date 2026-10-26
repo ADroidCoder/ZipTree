@@ -449,3 +449,23 @@ fn missing_volume() {
         r => panic!("{r:?}"),
     }
 }
+
+#[test]
+fn zip_based_packages() {
+    let dir = tempfile::tempdir().unwrap();
+    let src = dir.path().join("src");
+    fs::create_dir(&src).unwrap();
+    fs::write(src.join("AndroidManifest.xml"), "x").unwrap();
+    fs::write(src.join("classes.dex"), "y").unwrap();
+    let zip = dir.path().join("app.zip");
+    create(&[src.join("AndroidManifest.xml"), src.join("classes.dex")], &zip, &opts(CreateFormat::Zip, None), &Progress::new()).unwrap();
+    let apk = dir.path().join("游戏.apk");
+    fs::rename(&zip, &apk).unwrap();
+
+    assert!(ziptree_core::looks_like_archive(&apk));
+    assert!(!ziptree_core::looks_like_archive(&dir.path().join("a.docx")));
+    assert_eq!(list(&apk, &ReadOptions::default()).unwrap().format, Format::Zip);
+    let r = extract_here(&apk, &ExtractOptions::default(), &Progress::new()).unwrap();
+    assert_eq!(r.dest, dir.path().join("游戏"));
+    assert!(r.dest.join("classes.dex").is_file());
+}

@@ -178,4 +178,9 @@ pub fn looks_like_archive(path: &Path) -> bool {
             ext(path).as_str(),
             "zip" | "7z" | "rar" | "tar" | "gz" | "tgz" | "bz2" | "tbz" | "tbz2" | "xz" | "txz" | "zst" | "tzst"
         )
+        || ZIP_BASED.contains(&ext(path).as_str())
 }
+
+/// 本质上是 zip 的文件：安卓和 iOS 安装包、Java 包、电子书等，可以当压缩包打开
+const ZIP_BASED: [&str; 15] =
+    ["apk", "apks", "xapk", "aab", "aar", "ipa", "jar", "war", "ear", "epub", "xpi", "vsix", "whl", "nupkg", "cbz"];

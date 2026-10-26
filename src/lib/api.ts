@@ -97,7 +97,11 @@ export const FORMAT_EXT: Record<CreateFormat, string> = {
   tar_zst: "tar.zst",
 };
 
-export const ARCHIVE_EXTS = ["zip", "7z", "rar", "tar", "gz", "tgz", "bz2", "tbz", "tbz2", "xz", "txz", "zst", "tzst", "001"];
+export const ARCHIVE_EXTS = [
+  ...["zip", "7z", "rar", "tar", "gz", "tgz", "bz2", "tbz", "tbz2", "xz", "txz", "zst", "tzst", "001"],
+  // 本质上是 zip 的安装包、电子书等
+  ...["apk", "apks", "xapk", "aab", "aar", "ipa", "jar", "war", "ear", "epub", "xpi", "vsix", "whl", "nupkg", "cbz"],
+];
 
 export const api = {
   setLang: (en: boolean, locale: string) => invoke<void>("set_lang", { en, locale }),

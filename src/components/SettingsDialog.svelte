@@ -52,9 +52,9 @@
   <div class="grid">
     <span class="lbl">{t("打开压缩包时")}</span>
     <div class="col">
-      <label><input type="radio" bind:group={prefs.openAction} value="extract" /> {t("直接解压到所在文件夹")}</label>
       <label><input type="radio" bind:group={prefs.openAction} value="preview" /> {t("先预览里面的内容")}</label>
-      <span class="faint small">{t("双击压缩包、拖到程序坞图标或窗口里时生效")}</span>
+      <label><input type="radio" bind:group={prefs.openAction} value="extract" /> {t("直接解压到所在文件夹")}</label>
+      <span class="faint small">{t("双击压缩包、拖到程序坞图标上时生效")}</span>
     </div>
 
     <span class="lbl">{t("解压到")}</span>

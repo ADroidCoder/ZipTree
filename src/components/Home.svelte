@@ -21,14 +21,25 @@
 
 <div class="home">
   <div class="cards">
-    <section class="card" class:active={zone === "extract"} class:dragging data-drop="extract">
+    <section class="card" class:dragging>
       <div class="icon"><Icon name="extract" size={34} stroke={1.6} /></div>
       <h3>{t("解压")}</h3>
-      <p class="dim">{t("把压缩包拖到这里，解压到它所在的文件夹")}</p>
+      <p class="dim">{t("把压缩包拖到这里，预览里面的内容或直接解压")}</p>
       <div class="actions">
-        <button class="primary" onclick={onextract}>{t("选择压缩包…")}</button>
-        <button onclick={onpreview}>{t("预览内容…")}</button>
+        <button class="primary" onclick={onpreview}>{t("打开压缩包…")}</button>
+        <button onclick={onextract}>{t("直接解压…")}</button>
       </div>
+      {#if dragging}
+        <!-- 拖动时分成两块，盖在卡片上，卡片大小不变 -->
+        <div class="split">
+          <div class="half" class:active={zone === "preview"} data-drop="preview">
+            <Icon name="eye" size={24} />{t("预览内容")}
+          </div>
+          <div class="half" class:active={zone === "extract"} data-drop="extract">
+            <Icon name="extract" size={24} />{t("直接解压")}
+          </div>
+        </div>
+      {/if}
     </section>
     <section class="card" class:active={zone === "compress"} class:dragging data-drop="compress">
       <div class="icon"><Icon name="compress" size={34} stroke={1.6} /></div>
@@ -40,7 +51,7 @@
       </div>
     </section>
   </div>
-  <p class="formats faint">ZIP · 7Z · RAR · TAR · GZ · BZ2 · XZ · ZST</p>
+  <p class="formats faint">ZIP · 7Z · RAR · TAR · GZ · BZ2 · XZ · ZST · APK · JAR · IPA</p>
 </div>
 
 <style>
@@ -64,6 +75,7 @@
   }
 
   .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -87,6 +99,41 @@
     border-style: solid;
     background: var(--bg-drop);
     transform: scale(1.015);
+  }
+
+  .split {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 14px;
+    background: var(--bg-panel);
+  }
+
+  .half {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1.5px dashed var(--border-strong);
+    border-radius: 10px;
+    color: var(--text-dim);
+    font-size: 15px;
+    font-weight: 500;
+    transition:
+      border-color 0.12s,
+      background 0.12s,
+      color 0.12s;
+  }
+
+  .half.active {
+    border-color: var(--accent);
+    border-style: solid;
+    background: var(--bg-drop);
+    color: var(--accent);
   }
 
   .icon {
