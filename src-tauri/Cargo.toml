@@ -1,6 +1,6 @@
 [package]
 name = "ziptree"
-version = "0.1.0"
+version = "0.1.1"
 description = "免费、开源的解压缩工具"
 edition = "2024"
 license = "Apache-2.0"
