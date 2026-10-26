@@ -5,6 +5,7 @@
   import { savedLang, setLang, t, type Lang } from "../lib/i18n";
   import { isMac } from "../lib/util";
   import { prefs, savePrefs } from "../lib/prefs.svelte";
+  import { checkUpdate, updater } from "../lib/updater.svelte";
   import Dialog from "./Dialog.svelte";
 
   let { onclose }: { onclose: () => void } = $props();
@@ -113,6 +114,21 @@
       <option value="zh">简体中文</option>
       <option value="en">English</option>
     </select>
+
+    <span class="lbl">{t("版本")}</span>
+    <div class="col">
+      <div class="dir">
+        <span>{updater.version ? `v${updater.version}` : ""}</span>
+        {#if updater.update}
+          <button class="small primary" onclick={() => (updater.open = true)}>{t("安装新版本 {0}…", updater.update.version)}</button>
+        {:else}
+          <button class="small" disabled={updater.status === "checking"} onclick={() => checkUpdate(true)}>
+            {updater.status === "checking" ? t("正在检查…") : t("检查更新")}
+          </button>
+        {/if}
+      </div>
+      {#if updater.message}<span class="faint small">{updater.message}</span>{/if}
+    </div>
   </div>
   {#snippet footer()}
     <button class="primary" onclick={onclose}>{t("完成")}</button>

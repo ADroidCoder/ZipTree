@@ -141,5 +141,13 @@
         "PlugIns/ZipTreeFinder.appex": "../target/finder/ZipTreeFinder.appex"
       }
     }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDZCNjc1OTA1NzRFOEU1Q0IKUldUTDVlaDBCVmxuYXk4clYvcHVHYXYzaE9SS1ZhR2hxMTBiL2EyNFdsWVdHbFpNNGwrSm1oWkgK",
+      "endpoints": [
+        "https://github.com/ADroidCoder/ZipTree/releases/latest/download/latest.json"
+      ]
+    }
   }
 }

@@ -16,6 +16,8 @@
   import PasswordDialog from "./components/PasswordDialog.svelte";
   import SettingsDialog from "./components/SettingsDialog.svelte";
   import TaskPanel from "./components/TaskPanel.svelte";
+  import UpdateDialog from "./components/UpdateDialog.svelte";
+  import { startUpdater, updater } from "./lib/updater.svelte";
 
   type View = { kind: "home" } | { kind: "archive"; path: string; listing: Listing; password: string | null; encoding: string | null };
 
@@ -126,6 +128,7 @@
 
   onMount(() => {
     syncBackendLang();
+    startUpdater();
     const unlisteners: Promise<() => void>[] = [
       listen<OpenRequest>("open-request", (e) => handlePaths(e.payload.paths, e.payload.action)),
       getCurrentWebview().onDragDropEvent((ev) => {
@@ -163,6 +166,9 @@
     <div class="grow" data-tauri-drag-region></div>
     {#if view.kind === "archive"}
       <button class="plain" title={t("打开其他压缩包")} onclick={() => pickArchive("preview")}>{t("打开…")}</button>
+    {/if}
+    {#if updater.update}
+      <button class="plain update" onclick={() => (updater.open = true)}>{t("新版本 {0}", updater.update.version)}</button>
     {/if}
     <button class="plain" title={t("设置")} onclick={() => (settingsOpen = true)}><Icon name="gear" size={16} /></button>
   </header>
@@ -207,6 +213,9 @@
 {#if settingsOpen}
   <SettingsDialog onclose={() => (settingsOpen = false)} />
 {/if}
+{#if updater.open && updater.update}
+  <UpdateDialog />
+{/if}
 {#if passwordPrompt.current}
   {#key passwordPrompt.current}
     <PasswordDialog prompt={passwordPrompt.current} />
@@ -222,6 +231,11 @@
 {/if}
 
 <style>
+  .update {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
   .app {
     height: 100%;
     display: flex;

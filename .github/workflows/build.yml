@@ -42,9 +42,15 @@ jobs:
         include:
           - name: macOS (Apple 芯片)
             target: aarch64-apple-darwin
+            arch: aarch64
           - name: macOS (Intel)
             target: x86_64-apple-darwin
+            arch: x64
     runs-on: macos-latest
+    env:
+      # 自动更新包的签名私钥，在仓库 Settings → Secrets and variables → Actions 里配置；没配置时只打普通安装包
+      TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+      TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -58,11 +64,24 @@ jobs:
         with:
           key: ${{ matrix.target }}
       - run: npm ci
-      - run: npx tauri build --target ${{ matrix.target }}
+      - name: 打包
+        run: |
+          args=(--target "${{ matrix.target }}")
+          [ -n "$TAURI_SIGNING_PRIVATE_KEY" ] && args+=(--config src-tauri/tauri.updater.conf.json)
+          npx tauri build "${args[@]}"
+      - name: 更新包按架构改名
+        run: |
+          dir="target/${{ matrix.target }}/release/bundle/macos"
+          if [ -f "$dir/ZipTree.app.tar.gz" ]; then
+            mv "$dir/ZipTree.app.tar.gz" "$dir/ZipTree_${{ matrix.arch }}.app.tar.gz"
+            mv "$dir/ZipTree.app.tar.gz.sig" "$dir/ZipTree_${{ matrix.arch }}.app.tar.gz.sig"
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: ZipTree-${{ matrix.target }}
-          path: target/${{ matrix.target }}/release/bundle/dmg/*.dmg
+          path: |
+            target/${{ matrix.target }}/release/bundle/dmg/*.dmg
+            target/${{ matrix.target }}/release/bundle/macos/*.app.tar.gz*
           if-no-files-found: error
 
   release:
@@ -71,12 +90,28 @@ jobs:
     needs: [test, build]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/download-artifact@v4
         with:
           path: dist
           merge-multiple: true
+      # 下载下来会带着 dmg/、macos/ 这样的子目录，放到同一层才能上传
+      - name: 把安装包放到同一层
+        run: |
+          find dist -mindepth 2 -type f -exec mv -t dist {} +
+          find dist -mindepth 1 -type d -empty -delete
+      - name: 生成自动更新用的 latest.json
+        run: |
+          prev=$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^" 2>/dev/null || true)
+          git log --no-merges --format='- %s' ${prev:+$prev..}"$GITHUB_REF_NAME" \
+            | python3 .github/scripts/latest_json.py dist "$GITHUB_REF_NAME" "$GITHUB_REPOSITORY" > latest.json \
+            && mv latest.json dist/ || rm -f latest.json
+      - run: ls -la dist
       - uses: softprops/action-gh-release@v2
         with:
           name: ZipTree ${{ github.ref_name }}
+          body_path: .github/release-notes.md
           generate_release_notes: true
-          files: dist/*.dmg
+          files: dist/*
