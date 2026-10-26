@@ -146,5 +146,5 @@ export default {
   检查更新: "Check for Updates",
   已经是最新版本: "You're up to date",
   "检查更新失败：{0}": "Couldn't check for updates: {0}",
-  暂时无法获取新版本信息，请检查网络后再试: "Couldn't get update info. Check your connection and try again.",
+  "暂时无法获取新版本信息，请检查网络后再试": "Couldn't get update info. Check your connection and try again.",
 } as Record<string, string>;
