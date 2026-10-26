@@ -8,6 +8,11 @@ use std::path::Path;
 use unrar::Archive;
 use unrar::error::{Code, UnrarError};
 
+// unrar-sys 在 Windows 上用到了注册表、加密等 advapi32 里的函数，但没有声明链接它
+#[cfg(windows)]
+#[link(name = "advapi32")]
+unsafe extern "system" {}
+
 fn archive<'a>(path: &'a Path, password: Option<&'a str>) -> Archive<'a> {
     let a = match password {
         Some(pw) => Archive::with_password(path, pw),
