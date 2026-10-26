@@ -28,6 +28,9 @@ fn sample(root: &Path) -> PathBuf {
     src
 }
 
+/// sample() 里的文件数：4 个普通文件，类 Unix 系统上再加一个符号链接
+const SAMPLE_FILES: usize = if cfg!(unix) { 5 } else { 4 };
+
 fn check_tree(out: &Path) {
     assert_eq!(fs::read_to_string(out.join("说明.txt")).unwrap(), "你好，ZipTree");
     assert_eq!(fs::read(out.join("子目录/更深/data.bin")).unwrap().len(), 200_000);
@@ -65,7 +68,7 @@ fn roundtrip_all_formats() {
         let out = dir.path().join("out");
         let p = Progress::new();
         let r = extract(&archive, &out, &ExtractOptions::default(), &p).unwrap();
-        assert!(r.files >= 5, "{format:?}");
+        assert!(r.files >= SAMPLE_FILES, "{format:?}");
         check_tree(&out.join("资料"));
         let s = p.snapshot();
         assert!(s.total > 0 && s.done >= s.total, "{format:?} 进度 {s:?}");
@@ -426,7 +429,7 @@ fn integrity_test_password() {
     create(&[src], &archive, &opts(CreateFormat::SevenZ, Some("秘密")), &Progress::new()).unwrap();
     let pw = |p: &str| ReadOptions { password: Some(p.into()), ..Default::default() };
     assert!(matches!(test(&archive, &pw("错"), &Progress::new()), Err(Error::WrongPassword)));
-    assert!(test(&archive, &pw("秘密"), &Progress::new()).unwrap().files >= 5);
+    assert!(test(&archive, &pw("秘密"), &Progress::new()).unwrap().files >= SAMPLE_FILES);
     let rar = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/crypted.rar");
     assert!(test(&rar, &pw("unrar"), &Progress::new()).unwrap().files >= 1);
 }
